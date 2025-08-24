@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WoL Waker Configuration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .section {
+            border: 1px solid #eee;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background-color: #fafafa;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #007acc;
+            padding-bottom: 10px;
+        }
+        .btn {
+            background-color: #007acc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background-color: #005a9e;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            display: none;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔌 WoL Waker Configuration</h1>
+        
+        <div id="status" class="status"></div>
+        
+        <form id="configForm">
+            <!-- Basic Configuration -->
+            <div class="section">
+                <h3>Basic Configuration</h3>
+                
+                <div class="form-group">
+                    <label for="macAddress">MAC Address *</label>
+                    <input type="text" id="macAddress" name="macAddress" placeholder="AA:BB:CC:DD:EE:FF" required>
+                    <div class="help-text">MAC address of the target server for Wake-on-LAN</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="serverIp">Server IP Address *</label>
+                    <input type="text" id="serverIp" name="serverIp" placeholder="192.168.2.17" required>
+                    <div class="help-text">IP address of the target server</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="broadcastAddress">Broadcast Address</label>
+                    <input type="text" id="broadcastAddress" name="broadcastAddress" placeholder="255.255.255.255">
+                    <div class="help-text">Network broadcast address (usually 255.255.255.255)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="broadcastPort">Broadcast Port</label>
+                    <input type="number" id="broadcastPort" name="broadcastPort" value="9" min="1" max="65535">
+                    <div class="help-text">UDP port for Wake-on-LAN (usually 9)</div>
+                </div>
+            </div>
+            
+            <!-- Wake-up Settings -->
+            <div class="section">
+                <h3>Wake-up Settings</h3>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="enableAutoWake" name="enableAutoWake">
+                    <label for="enableAutoWake">Enable automatic wake-up</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="wakeOnPlaybackStart" name="wakeOnPlaybackStart">
+                    <label for="wakeOnPlaybackStart">Wake server when playback starts</label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="wakeTimeout">Wake Timeout (seconds)</label>
+                    <input type="number" id="wakeTimeout" name="wakeTimeout" value="300" min="60" max="1800">
+                    <div class="help-text">Maximum time to wait for server wake-up</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="checkInterval">Check Interval (seconds)</label>
+                    <input type="number" id="checkInterval" name="checkInterval" value="10" min="5" max="60">
+                    <div class="help-text">Interval between server status checks</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cooldownSeconds">Cooldown Period (seconds)</label>
+                    <input type="number" id="cooldownSeconds" name="cooldownSeconds" value="300" min="60" max="3600">
+                    <div class="help-text">Minimum time between wake attempts</div>
+                </div>
+            </div>
+            
+            <!-- Power Monitoring -->
+            <div class="section">
+                <h3>Power Monitoring</h3>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="powerMonitoringEnabled" name="powerMonitoringEnabled">
+                    <label for="powerMonitoringEnabled">Enable power monitoring</label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="powerMonitorApiUrl">Power Monitor API URL</label>
+                    <input type="text" id="powerMonitorApiUrl" name="powerMonitorApiUrl" placeholder="http://192.168.2.226:5678/api/power-status">
+                    <div class="help-text">URL for the power monitoring API (n8n endpoint)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="powerMonitorPollInterval">Polling Interval (seconds)</label>
+                    <input type="number" id="powerMonitorPollInterval" name="powerMonitorPollInterval" value="5" min="1" max="30">
+                    <div class="help-text">How often to check power status</div>
+                </div>
+            </div>
+            
+            <!-- Advanced Settings -->
+            <div class="section">
+                <h3>Advanced Settings</h3>
+                
+                <div class="form-group">
+                    <label for="minWakeInterval">Minimum Wake Interval (seconds)</label>
+                    <input type="number" id="minWakeInterval" name="minWakeInterval" value="60" min="10" max="600">
+                    <div class="help-text">Minimum time between wake attempts</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxWakeAttempts">Maximum Wake Attempts</label>
+                    <input type="number" id="maxWakeAttempts" name="maxWakeAttempts" value="3" min="1" max="10">
+                    <div class="help-text">Maximum number of wake attempts before giving up</div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="showUserMessages" name="showUserMessages">
+                    <label for="showUserMessages">Show user messages</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="enableDetailedLogging" name="enableDetailedLogging">
+                    <label for="enableDetailedLogging">Enable detailed logging</label>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn btn-success">Save Configuration</button>
+                <button type="button" class="btn btn-secondary" onclick="loadConfiguration()">Load Current</button>
+                <button type="button" class="btn" onclick="testWakeOnLan()">Test WoL</button>
+                <button type="button" class="btn btn-secondary" onclick="getStatus()">Get Status</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Load configuration when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConfiguration();
+        });
+
+        // Handle form submission
+        document.getElementById('configForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveConfiguration();
+        });
+
+        // Load current configuration
+        function loadConfiguration() {
+            showStatus('Loading configuration...', 'info');
+            
+            fetch('/wol/config')
+                .then(response => response.json())
+                .then(data => {
+                    // Populate form fields
+                    document.getElementById('macAddress').value = data.macAddress || '';
+                    document.getElementById('serverIp').value = data.serverIp || '';
+                    document.getElementById('broadcastAddress').value = data.broadcastAddress || '255.255.255.255';
+                    document.getElementById('broadcastPort').value = data.broadcastPort || 9;
+                    document.getElementById('wakeTimeout').value = data.wakeTimeout || 300;
+                    document.getElementById('checkInterval').value = data.checkInterval || 10;
+                    document.getElementById('cooldownSeconds').value = data.cooldownSeconds || 300;
+                    document.getElementById('enableAutoWake').checked = data.enableAutoWake || false;
+                    document.getElementById('wakeOnPlaybackStart').checked = data.wakeOnPlaybackStart || false;
+                    document.getElementById('powerMonitoringEnabled').checked = data.powerMonitoringEnabled || false;
+                    document.getElementById('powerMonitorApiUrl').value = data.powerMonitorApiUrl || '';
+                    document.getElementById('powerMonitorPollInterval').value = data.powerMonitorPollInterval || 5;
+                    document.getElementById('minWakeInterval').value = data.minWakeInterval || 60;
+                    document.getElementById('maxWakeAttempts').value = data.maxWakeAttempts || 3;
+                    document.getElementById('showUserMessages').checked = data.showUserMessages || false;
+                    document.getElementById('enableDetailedLogging').checked = data.enableDetailedLogging || false;
+                    
+                    showStatus('Configuration loaded successfully', 'success');
+                })
+                .catch(error => {
+                    showStatus('Error loading configuration: ' + error.message, 'error');
+                });
+        }
+
+        // Save configuration
+        function saveConfiguration() {
+            showStatus('Saving configuration...', 'info');
+            
+            const formData = new FormData(document.getElementById('configForm'));
+            const config = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (key === 'enableAutoWake' || key === 'wakeOnPlaybackStart' || 
+                    key === 'powerMonitoringEnabled' || key === 'showUserMessages' || 
+                    key === 'enableDetailedLogging') {
+                    config[key] = true;
+                } else {
+                    config[key] = value;
+                }
+            }
+            
+            // Add unchecked checkboxes
+            if (!formData.has('enableAutoWake')) config.enableAutoWake = false;
+            if (!formData.has('wakeOnPlaybackStart')) config.wakeOnPlaybackStart = false;
+            if (!formData.has('powerMonitoringEnabled')) config.powerMonitoringEnabled = false;
+            if (!formData.has('showUserMessages')) config.showUserMessages = false;
+            if (!formData.has('enableDetailedLogging')) config.enableDetailedLogging = false;
+            
+            fetch('/wol/config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(config)
+            })
+            .then(response => response.json())
+            .then(data => {
+                showStatus('Configuration saved successfully', 'success');
+            })
+            .catch(error => {
+                showStatus('Error saving configuration: ' + error.message, 'error');
+            });
+        }
+
+        // Test Wake-on-LAN
+        function testWakeOnLan() {
+            showStatus('Testing Wake-on-LAN...', 'info');
+            
+            fetch('/wol/test', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showStatus('Wake-on-LAN test successful: ' + data.message, 'success');
+                } else {
+                    showStatus('Wake-on-LAN test completed: ' + data.message, 'info');
+                }
+            })
+            .catch(error => {
+                showStatus('Error testing Wake-on-LAN: ' + error.message, 'error');
+            });
+        }
+
+        // Get status
+        function getStatus() {
+            showStatus('Getting status...', 'info');
+            
+            fetch('/wol/status')
+                .then(response => response.json())
+                .then(data => {
+                    const statusText = `Status: MAC ${data.macAddress}, Server ${data.serverIp}, Attempts ${data.attemptCount}, Last sent ${Math.round(data.timeSinceLastSent)}s ago`;
+                    showStatus(statusText, 'info');
+                })
+                .catch(error => {
+                    showStatus('Error getting status: ' + error.message, 'error');
+                });
+        }
+
+        // Show status message
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+            statusDiv.style.display = 'block';
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
