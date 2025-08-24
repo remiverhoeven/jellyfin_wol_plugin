@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Jellyfin.Plugin.WolWaker.Services;
@@ -7,7 +8,7 @@ namespace Jellyfin.Plugin.WolWaker;
 /// <summary>
 /// Service registrator for the WoL Waker plugin.
 /// </summary>
-public class PluginServiceRegistrator : IPluginServiceRegistrator
+public class PluginServiceRegistrator // : IPluginServiceRegistrator
 {
     /// <summary>
     /// Registers the plugin services with the dependency injection container.

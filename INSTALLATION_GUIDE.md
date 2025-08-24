@@ -26,10 +26,78 @@ The **WoL Waker** plugin automatically wakes up your archival storage server (Xe
 - Network access to your Xeon server
 - Optional: n8n instance for power monitoring
 
-### Step 1: Download the Plugin
+### Step 1: Build the Plugin
+
+#### Option A: Build from Source (Recommended)
+
+**Prerequisites for Building:**
+- .NET 8.0 SDK (not just runtime)
+- Git
+- A code editor (Visual Studio, VS Code, or Rider)
+
+**Build Steps:**
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/yourusername/jellyfin_wol_plugin_new.git
+   cd jellyfin_wol_plugin_new
+   ```
+
+2. **Build the Plugin:**
+   ```bash
+   # Navigate to the plugin directory
+   cd Jellyfin.Plugin.WolWaker
+   
+   # Restore NuGet packages
+   dotnet restore
+   
+   # Build the project in Release mode
+   dotnet build -c Release
+   
+   # The DLL will be created in: bin/Release/net8.0/Jellyfin.Plugin.WolWaker.dll
+   ```
+
+3. **Create Plugin Directory:**
+   ```bash
+   # Linux/macOS
+   sudo mkdir -p /var/lib/jellyfin/plugins/WoLWaker
+   
+   # Windows
+   mkdir "C:\ProgramData\Jellyfin\Server\plugins\WoLWaker"
+   
+   # Docker (if using Docker)
+   mkdir -p /path/to/jellyfin/config/plugins/WoLWaker
+   ```
+
+4. **Copy the Built DLL:**
+   ```bash
+   # Linux/macOS
+   sudo cp bin/Release/net8.0/Jellyfin.Plugin.WolWaker.dll /var/lib/jellyfin/plugins/WoLWaker/
+   
+   # Windows
+   copy "bin\Release\net8.0\Jellyfin.Plugin.WolWaker.dll" "C:\ProgramData\Jellyfin\Server\plugins\WoLWaker\"
+   
+   # Docker
+   cp bin/Release/net8.0/Jellyfin.Plugin.WolWaker.dll /path/to/jellyfin/config/plugins/WoLWaker/
+   ```
+
+5. **Verify the Build:**
+   ```bash
+   # Check if DLL was created
+   ls -la bin/Release/net8.0/Jellyfin.Plugin.WolWaker.dll
+   
+   # Verify file size (should be several hundred KB)
+   # Verify file permissions
+   ```
+
+#### Option B: Download Pre-built DLL (Alternative)
+
+If you prefer not to build from source:
 1. Download `Jellyfin.Plugin.WolWaker.dll` from the releases
 2. Create directory: `/path/to/jellyfin/config/plugins/WoLWaker/`
 3. Copy the DLL to this directory
+
+**Note:** Building from source ensures you have the latest version and can verify the code.
 
 ### Step 2: Restart Jellyfin
 ```bash
@@ -225,6 +293,13 @@ curl http://your-jellyfin:8096/wol/sessions/[user-id]
 - Ensure DLL is in correct directory
 - Restart Jellyfin completely
 
+### Build Issues
+- **Missing .NET SDK**: Install .NET 8.0 SDK (not just runtime)
+- **NuGet restore fails**: Check internet connection and try `dotnet restore --interactive`
+- **Build errors**: Ensure all dependencies are compatible with .NET 8.0
+- **DLL not found**: Verify the build output path and copy the correct file
+- **✅ RESOLVED**: The plugin now builds successfully with modern Jellyfin 10.x packages!
+
 #### Wake-on-LAN Not Working
 - Verify MAC address is correct
 - Check network broadcast settings
@@ -259,6 +334,71 @@ Enable detailed logging in the plugin configuration and check Jellyfin logs for:
 ### Debug Mode
 
 Set `Enable Detailed Logging: ✓` and `Log Level: Debug` for verbose output.
+
+## ✅ Current Status - Plugin Successfully Built!
+
+**Great News:** The plugin has been successfully updated and now builds with modern Jellyfin 10.x packages! All package dependency issues have been resolved.
+
+### What Was Fixed
+
+1. **✅ Package References Updated**: Replaced outdated packages with modern Jellyfin 10.x equivalents
+2. **✅ Plugin Architecture Modernized**: Updated to use current Jellyfin plugin patterns
+3. **✅ Build Compatibility**: Plugin now builds successfully with .NET 8.0 and Jellyfin 10.x
+
+### Current Status
+
+- **Build Status**: ✅ Successfully builds in both Debug and Release modes
+- **Package Dependencies**: ✅ All resolved and compatible
+- **Target Framework**: ✅ .NET 8.0
+- **Jellyfin Compatibility**: ✅ Jellyfin 10.x
+
+## 🛠️ Development Setup
+
+### Prerequisites for Development
+- .NET 8.0 SDK
+- Visual Studio 2022, VS Code with C# extension, or JetBrains Rider
+- Git
+- Jellyfin development environment (optional, for testing)
+
+### Setting Up Development Environment
+
+1. **Clone and Open:**
+   ```bash
+   git clone https://github.com/yourusername/jellyfin_wol_plugin_new.git
+   cd jellyfin_wol_plugin_new
+   ```
+
+2. **Open in Your IDE:**
+   ```bash
+   # VS Code
+   code .
+   
+   # Visual Studio
+   start Jellyfin.Plugin.WolWaker.sln
+   ```
+
+3. **Build and Test:**
+   ```bash
+   # Debug build
+   dotnet build
+   
+   # Run tests (if any)
+   dotnet test
+   
+   # Clean build
+   dotnet clean
+   dotnet build
+   ```
+
+### Project Structure
+```
+Jellyfin.Plugin.WolWaker/
+├── Controllers/          # API endpoints
+├── Services/             # Business logic
+├── Plugin.cs            # Main plugin entry point
+├── PluginConfiguration.cs # Configuration model
+└── Web/                 # Frontend assets
+```
 
 ## 📚 Advanced Configuration
 

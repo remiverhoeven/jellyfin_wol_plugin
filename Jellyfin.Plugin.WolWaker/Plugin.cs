@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
@@ -30,9 +32,10 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     /// Initializes a new instance of the <see cref="Plugin"/> class.
     /// </summary>
     /// <param name="appPaths">The application paths.</param>
+    /// <param name="xmlSerializer">The XML serializer.</param>
     /// <param name="logger">The logger.</param>
-    public Plugin(IApplicationPaths appPaths, ILogger<Plugin> logger)
-        : base(appPaths, logger)
+    public Plugin(IApplicationPaths appPaths, MediaBrowser.Model.Serialization.IXmlSerializer xmlSerializer, ILogger<Plugin> logger)
+        : base(appPaths, xmlSerializer)
     {
         logger.LogInformation("WoL Waker plugin initialized");
     }
