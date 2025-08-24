@@ -5,10 +5,3 @@ bin/
 obj/
 *.dll
 
-# Documentation files not needed for configuration
-SETUP.md
-implementation_plan.md
-jellyfin_wol_design.md.m
-jellyfin_wol_technical_spec.md
-requirements_update_summary.md
-design_evaluation.md
