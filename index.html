@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WoL Waker Plugin Repository</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .section { margin-bottom: 30px; }
+        .download { background: #f0f0f0; padding: 20px; border-radius: 8px; }
+        .code { background: #f5f5f5; padding: 15px; border-radius: 4px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 WoL Waker Plugin Repository</h1>
+            <p>A Jellyfin plugin that automatically wakes up archival storage servers</p>
+        </div>
+
+        <div class="section">
+            <h2>📦 Installation</h2>
+            <p>Add this repository to your Jellyfin instance:</p>
+            <div class="code">https://remiverhoeven.github.io/jellyfin_wol_plugin/</div>
+            
+            <h3>Steps:</h3>
+            <ol>
+                <li>Go to Jellyfin Dashboard → Plugins → Repositories</li>
+                <li>Click "Add Repository"</li>
+                <li>Enter the URL above</li>
+                <li>Go to Plugins → Available</li>
+                <li>Find "WoL Waker" and click Install</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>🔌 Plugin Features</h2>
+            <ul>
+                <li><strong>Wake-on-LAN:</strong> Automatically wake archival storage servers</li>
+                <li><strong>Power Monitoring:</strong> Integration with power monitoring APIs</li>
+                <li><strong>Smart Wake Logic:</strong> Prevents unnecessary wake attempts</li>
+                <li><strong>User Notifications:</strong> Keep users informed of server status</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📋 Requirements</h2>
+            <ul>
+                <li>Jellyfin 10.9.0 or higher</li>
+                <li>.NET 8.0 runtime</li>
+                <li>Wake-on-LAN capable network card</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔄 Auto-Updates</h2>
+            <p>This plugin repository automatically updates when new versions are pushed. Users just need to restart Jellyfin to get the latest version.</p>
+        </div>
+
+        <div class="section">
+            <h2>📁 Repository Files</h2>
+            <ul>
+                <li><a href="manifest.json">manifest.json</a> - Plugin repository manifest</li>
+                <li><a href="plugin-packages/">plugin-packages/</a> - Plugin ZIP packages</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🆘 Support</h2>
+            <p>For issues or questions, please open an issue on the main plugin repository.</p>
+        </div>
+    </div>
+</body>
+</html>
