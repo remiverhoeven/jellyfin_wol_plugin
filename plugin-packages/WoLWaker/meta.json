@@ -7,5 +7,5 @@
   "version": "1.0.0",
   "targetAbi": "10.9.0.0",
   "overview": "A Jellyfin plugin that automatically wakes up archival storage servers when media is requested",
-  "changelog": "Automated build from 5661cb27d76eb0b3d11dfc95109b5a008297b882"
+  "changelog": "Automated build from c874d9f178ac1e8ce329d4ea12e98523a69e34ea"
 }
