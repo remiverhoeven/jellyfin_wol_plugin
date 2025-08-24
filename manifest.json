@@ -1,16 +1,19 @@
-{
-  "guid": "0ee23b2e-9d4d-4b5e-a0b9-7b4e54c5a5f2",
-  "name": "WoL Waker",
-  "description": "Automatically wakes up archival storage servers when media is requested, enabling power-efficient operation.",
-  "owner": "Remi Verhoeven",
-  "category": "General",
-  "versions": [
-    {
-      "version": "1.0.0",
-      "targetAbi": "10.9.0.0",
-      "sourceUrl": "https://remiverhoeven.github.io/jellyfin_wol_plugin/WoLWaker@1.0.0.zip",
-      "checksum": "fd11ed6756b851dce7bb5e4df2104d0d2955f81dbd7c905bd3da7d37542a1475",
-      "timestamp": "2025-08-24T16:24:57Z"
-    }
-  ]
-}
+[
+  {
+    "name": "WoL Waker",
+    "guid": "0ee23b2e-9d4d-4b5e-a0b9-7b4e54c5a5f2",
+    "description": "Automatically wakes up archival storage servers when media is requested, enabling power-efficient operation.",
+    "owner": "Remi Verhoeven",
+    "category": "Utilities",
+    "versions": [
+      {
+        "version": "1.0.0",
+        "targetAbi": "10.9.0.0",
+        "sourceUrl": "https://remiverhoeven.github.io/jellyfin_wol_plugin/WoLWaker@1.0.0.zip",
+        "checksum": "b26402d95f11c09b9a929d5b108edbc7069b7d331495173b210bab8318f8a4c4",
+        "changelog": "Initial release with Wake-on-LAN functionality and power monitoring support",
+        "timestamp": "2025-08-24T16:39:14Z"
+      }
+    ]
+  }
+]
