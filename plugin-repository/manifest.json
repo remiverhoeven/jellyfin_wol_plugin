@@ -9,8 +9,8 @@
       {
         "version": "0.1.0.0",
         "targetAbi": "10.9.0.0",
-        "sourceUrl": "https://remiverhoeven.github.io/jellyfin_wol_plugin/plugin-packages/WoLWaker@v0.1.0.0.zip",
-        "checksum": "13566eabaf0727590402faea108c9f53e535c6e2b5d6d06ff1fee5d2deaec0dc",
+        "sourceUrl": "https://remiverhoeven.github.io/jellyfin_wol_plugin/plugin-packages/WoLWaker_0.1.0.0.zip",
+        "checksum": "1241d16d35933b6a23569c4eddaf43af",
         "changelog": "Initial release with Wake-on-LAN functionality and power monitoring support",
         "timestamp": "2025-08-24T16:38:00Z"
       }
