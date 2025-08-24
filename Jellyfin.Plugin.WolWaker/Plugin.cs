@@ -58,8 +58,8 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
             new PluginPageInfo
             {
                 // This is the route in the Dashboard UI:
-                // #/configurationpage?name=WoLWaker.html
-                Name = "WoLWaker.html",
+                // #/configurationpage?name=WoLWaker
+                Name = "WoLWaker",
                 // This must exactly match your assembly namespace + path
                 EmbeddedResourcePath = string.Format(
                     CultureInfo.InvariantCulture,

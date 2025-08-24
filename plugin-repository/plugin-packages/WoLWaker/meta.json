@@ -1,5 +1,5 @@
 {
-  "category": "General",
+  "category": "Utilities",
   "guid": "0ee23b2e-9d4d-4b5e-a0b9-7b4e54c5a5f2",
   "name": "WoL Waker",
   "description": "Automatically wakes up archival storage servers when media is requested, enabling power-efficient operation.",
