@@ -4,8 +4,8 @@
   "name": "WoL Waker",
   "description": "Automatically wakes up archival storage servers when media is requested, enabling power-efficient operation.",
   "owner": "Remi Verhoeven",
-  "version": "main",
+  "version": "1.0.0",
   "targetAbi": "10.9.0.0",
   "overview": "A Jellyfin plugin that automatically wakes up archival storage servers when media is requested",
-  "changelog": "Automated build from ca63175b0dcc77ef193ddd17f15ef6ffc336b59b"
+  "changelog": "Automated build from 5661cb27d76eb0b3d11dfc95109b5a008297b882"
 }

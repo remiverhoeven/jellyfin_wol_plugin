@@ -6,11 +6,11 @@
   "category": "General",
   "versions": [
     {
-      "version": "main",
+      "version": "1.0.0",
       "targetAbi": "10.9.0.0",
-      "sourceUrl": "https://remiverhoeven.github.io/jellyfin_wol_plugin/WoLWaker@vmain.zip",
-      "checksum": "f4f8ded62108897a0ae168bbf0129ad231da8ed269b87593ba1f0989e0e06151",
-      "timestamp": "2025-08-24T14:43:26Z"
+      "sourceUrl": "https://remiverhoeven.github.io/jellyfin_wol_plugin/WoLWaker@1.0.0.zip",
+      "checksum": "56613942c45a4854bc31af9284a1af99c8715dfe52129f62991f7ab858adf547",
+      "timestamp": "2025-08-24T14:47:35Z"
     }
   ]
 }
