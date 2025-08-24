@@ -7,7 +7,7 @@ This is a Jellyfin plugin repository for the WoL Waker plugin, hosted from the m
 ### Option 1: Add as Repository (Recommended)
 1. Go to Jellyfin Dashboard → Plugins → Repositories
 2. Click "Add Repository"
-3. Enter: `https://remiverhoeven.github.io/jellyfin_wol_plugin/`
+3. Enter: `https://remiverhoeven.github.io/jellyfin_wol_plugin_new/`
 4. Click "Add"
 5. Go to Plugins → Available
 6. Find "WoL Waker" and click Install

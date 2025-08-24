@@ -282,4 +282,37 @@ public class WolController : ControllerBase
             return StatusCode(500, new { error = "Internal server error", message = ex.Message });
         }
     }
+
+    /// <summary>
+    /// Gets the configuration page HTML.
+    /// </summary>
+    /// <returns>HTML configuration page.</returns>
+    [HttpGet("config-page")]
+    [AllowAnonymous]
+    public ActionResult ConfigPage()
+    {
+        try
+        {
+            var html = @"<!DOCTYPE html>
+<html>
+<head>
+    <title>WoL Waker Configuration</title>
+</head>
+<body>
+    <h1>WoL Waker Configuration</h1>
+    <p>Plugin is working!</p>
+    <p>This is a test page to verify Jellyfin can serve the HTML.</p>
+    <p>Current MAC: " + _plugin.Configuration.MacAddress + @"</p>
+    <p>Current Server IP: " + _plugin.Configuration.ServerIp + @"</p>
+</body>
+</html>";
+
+            return Content(html, "text/html");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error serving configuration page");
+            return StatusCode(500, "Error loading configuration page");
+        }
+    }
 }

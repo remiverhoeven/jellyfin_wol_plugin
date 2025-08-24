@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
@@ -29,6 +30,11 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     public override string Description => "Automatically wakes up archival storage servers when media is requested, enabling power-efficient operation.";
 
     /// <summary>
+    /// Gets the plugin instance.
+    /// </summary>
+    public static Plugin? Instance { get; private set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Plugin"/> class.
     /// </summary>
     /// <param name="appPaths">The application paths.</param>
@@ -37,6 +43,7 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     public Plugin(IApplicationPaths appPaths, MediaBrowser.Model.Serialization.IXmlSerializer xmlSerializer, ILogger<Plugin> logger)
         : base(appPaths, xmlSerializer)
     {
+        Instance = this;
         logger.LogInformation("WoL Waker plugin initialized");
     }
 
@@ -50,8 +57,14 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
         {
             new PluginPageInfo
             {
-                Name = "wolwaker",
-                EmbeddedResourcePath = GetType().Namespace + ".Web.wolwaker.html"
+                // This is the route in the Dashboard UI:
+                // #/configurationpage?name=WoLWaker.html
+                Name = "WoLWaker.html",
+                // This must exactly match your assembly namespace + path
+                EmbeddedResourcePath = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "{0}.Web.wolwaker.html",
+                    GetType().Namespace)
             }
         };
     }

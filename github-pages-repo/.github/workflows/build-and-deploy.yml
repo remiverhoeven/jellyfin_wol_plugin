@@ -25,12 +25,12 @@ jobs:
     
     - name: Create plugin package
       run: |
-        mkdir -p plugin-repository/plugin-packages/WoLWaker
-        cp Jellyfin.Plugin.WolWaker/bin/Release/net8.0/Jellyfin.Plugin.WolWaker.dll plugin-repository/plugin-packages/WoLWaker/
-        cp Jellyfin.Plugin.WolWaker/Web/wolwaker.html plugin-repository/plugin-packages/WoLWaker/
+        mkdir -p plugin-packages/WoLWaker
+        cp Jellyfin.Plugin.WolWaker/bin/Release/net8.0/Jellyfin.Plugin.WolWaker.dll plugin-packages/WoLWaker/
+        cp Jellyfin.Plugin.WolWaker/Web/wolwaker.html plugin-packages/WoLWaker/
         
         # Create meta.json
-        cat > plugin-repository/plugin-packages/WoLWaker/meta.json << 'EOF'
+        cat > plugin-packages/WoLWaker/meta.json << 'EOF'
         {
           "category": "General",
           "guid": "0ee23b2e-9d4d-4b5e-a0b9-7b4e54c5a5f2",
@@ -45,7 +45,7 @@ jobs:
         EOF
         
         # Create ZIP package
-        cd plugin-repository/plugin-packages
+        cd plugin-packages
         zip -r WoLWaker@v${{ github.ref_name }}.zip WoLWaker/
         
         # Calculate checksum
@@ -54,14 +54,15 @@ jobs:
     - name: Update manifest
       run: |
         # Update version and checksum in manifest
-        sed -i "s/\"version\": \".*\"/\"version\": \"${{ github.ref_name }}\"/" plugin-repository/manifest.json
-        sed -i "s/\"sourceUrl\": \".*\"/\"sourceUrl\": \"https:\/\/remiverhoeven.github.io\/jellyfin_wol_plugin\/WoLWaker@v${{ github.ref_name }}.zip\"/" plugin-repository/manifest.json
-        sed -i "s/\"checksum\": \".*\"/\"checksum\": \"${{ env.CHECKSUM }}\"/" plugin-repository/manifest.json
-        sed -i "s/\"timestamp\": \".*\"/\"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"/" plugin-repository/manifest.json
+        sed -i "s/\"version\": \".*\"/\"version\": \"${{ github.ref_name }}\"/" manifest.json
+        sed -i "s/\"sourceUrl\": \".*\"/\"sourceUrl\": \"https:\/\/remiverhoeven.github.io\/jellyfin-wolwaker-plugin\/WoLWaker@v${{ github.ref_name }}.zip\"/" manifest.json
+        sed -i "s/\"checksum\": \".*\"/\"checksum\": \"${{ env.CHECKSUM }}\"/" manifest.json
+        sed -i "s/\"timestamp\": \".*\"/\"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"/" manifest.json
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: plugin-repository
+        publish_dir: .
         publish_branch: gh-pages
+        cname: remiverhoeven.github.io

@@ -1,0 +1,14 @@
+{
+  "MacAddress": "00:11:22:33:44:55",
+  "BroadcastAddress": "255.255.255.255",
+  "ServerIp": "172.20.0.3",
+  "BroadcastPort": 9,
+  "WakeTimeout": 300,
+  "CheckInterval": 10,
+  "EnableAutoWake": true,
+  "ShowUserMessages": true,
+  "CooldownSeconds": 300,
+  "PowerMonitoringEnabled": true,
+  "PowerMonitorApiUrl": "http://localhost:5001/api/power-status",
+  "PowerMonitorPollInterval": 5
+}

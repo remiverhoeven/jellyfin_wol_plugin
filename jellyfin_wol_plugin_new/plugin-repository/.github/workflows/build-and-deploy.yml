@@ -55,7 +55,7 @@ jobs:
       run: |
         # Update version and checksum in manifest
         sed -i "s/\"version\": \".*\"/\"version\": \"${{ github.ref_name }}\"/" plugin-repository/manifest.json
-        sed -i "s/\"sourceUrl\": \".*\"/\"sourceUrl\": \"https:\/\/remiverhoeven.github.io\/jellyfin_wol_plugin\/WoLWaker@v${{ github.ref_name }}.zip\"/" plugin-repository/manifest.json
+        sed -i "s/\"sourceUrl\": \".*\"/\"sourceUrl\": \"https:\/\/remiverhoeven.github.io\/jellyfin_wol_plugin_new\/WoLWaker@v${{ github.ref_name }}.zip\"/" plugin-repository/manifest.json
         sed -i "s/\"checksum\": \".*\"/\"checksum\": \"${{ env.CHECKSUM }}\"/" plugin-repository/manifest.json
         sed -i "s/\"timestamp\": \".*\"/\"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"/" plugin-repository/manifest.json
     

@@ -1,13 +1,13 @@
 # 🚀 WoL Waker Plugin Repository
 
-This is a Jellyfin plugin repository for the WoL Waker plugin, hosted from the main plugin development repository.
+This is a Jellyfin plugin repository for the WoL Waker plugin.
 
 ## 📦 Installation
 
 ### Option 1: Add as Repository (Recommended)
 1. Go to Jellyfin Dashboard → Plugins → Repositories
 2. Click "Add Repository"
-3. Enter: `https://remiverhoeven.github.io/jellyfin_wol_plugin/`
+3. Enter: `https://remiverhoeven.github.io/jellyfin-wolwaker-plugin/`
 4. Click "Add"
 5. Go to Plugins → Available
 6. Find "WoL Waker" and click Install
@@ -37,7 +37,3 @@ For issues or questions, please open an issue on the main plugin repository.
 ## 📝 License
 
 This plugin is provided as-is for personal use.
-
-## 🔄 Auto-Updates
-
-This plugin repository automatically updates when new versions are pushed to the main repository. Users just need to restart Jellyfin to get the latest version.

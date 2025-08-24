@@ -68,13 +68,20 @@ check_prerequisites() {
         exit 1
     fi
     
-    DOTNET_VERSION=$(dotnet --version)
+    # Use the specific .NET 8.0 installation
+    DOTNET_CMD="/opt/homebrew/Cellar/dotnet@8/8.0.119/bin/dotnet"
+    if [ ! -f "$DOTNET_CMD" ]; then
+        print_error ".NET 8.0 SDK not found at expected path: $DOTNET_CMD"
+        exit 1
+    fi
+    
+    DOTNET_VERSION=$("$DOTNET_CMD" --version)
     if [[ ! "$DOTNET_VERSION" == 8.* ]]; then
         print_error "Wrong .NET version: $DOTNET_VERSION (need 8.x)"
         exit 1
     fi
     
-    print_success ".NET $DOTNET_VERSION found"
+    print_success ".NET $DOTNET_VERSION found at $DOTNET_CMD"
 }
 
 # Create development directory structure
@@ -216,11 +223,11 @@ setup_plugin_dev() {
     
     # Restore dependencies
     print_status "Restoring .NET dependencies..."
-    dotnet restore
+    "$DOTNET_CMD" restore
     
     # Build plugin
     print_status "Building plugin..."
-    dotnet build -c Debug
+    "$DOTNET_CMD" build -c Debug
     
     print_success "Plugin built successfully"
 }
@@ -259,7 +266,7 @@ create_test_config() {
   "ShowUserMessages": true,
   "CooldownSeconds": 300,
   "PowerMonitoringEnabled": true,
-  "PowerMonitorApiUrl": "http://localhost:5000/api/power-status",
+  "PowerMonitorApiUrl": "http://localhost:5001/api/power-status",
   "PowerMonitorPollInterval": 5
 }
 EOF
@@ -289,8 +296,8 @@ test_setup() {
     
     # Test power monitor simulator
     print_status "Testing power monitor simulator..."
-    if curl -s http://localhost:5000/health > /dev/null; then
-        print_success "Power monitor simulator is accessible at http://localhost:5000"
+    if curl -s http://localhost:5001/health > /dev/null; then
+        print_success "Power monitor simulator is accessible at http://localhost:5001"
     else
         print_warning "Power monitor simulator might not be ready yet, wait a few more seconds"
     fi
@@ -313,7 +320,7 @@ show_next_steps() {
     echo "🌐 Services available:"
     echo "  - Jellyfin:     http://localhost:8096"
     echo "  - n8n:          http://localhost:5678"
-    echo "  - Power Monitor: http://localhost:5000"
+    echo "  - Power Monitor: http://localhost:5001"
     echo "  - Mock Xeon:    http://localhost:8080"
     echo ""
     echo "📁 Test media locations:"
