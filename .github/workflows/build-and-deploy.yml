@@ -3,6 +3,7 @@ name: Build and Deploy Plugin
 on:
   push:
     branches: [ main ]
+    tags: [ 'v*' ]
   workflow_dispatch:
 
 jobs:
@@ -17,6 +18,17 @@ jobs:
       with:
         dotnet-version: '8.0.x'
     
+    - name: Determine version
+      id: version
+      run: |
+        if [[ $GITHUB_REF == refs/tags/v* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        else
+          VERSION="1.0.0"
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Building version: $VERSION"
+    
     - name: Restore dependencies
       run: dotnet restore Jellyfin.Plugin.WolWaker/Jellyfin.Plugin.WolWaker.csproj
     
@@ -30,14 +42,14 @@ jobs:
         cp Jellyfin.Plugin.WolWaker/Web/wolwaker.html plugin-repository/plugin-packages/WoLWaker/
         
         # Create meta.json
-        cat > plugin-repository/plugin-packages/WoLWaker/meta.json << 'EOF'
+        cat > plugin-repository/plugin-packages/WoLWaker/meta.json << EOF
         {
           "category": "General",
           "guid": "0ee23b2e-9d4d-4b5e-a0b9-7b4e54c5a5f2",
           "name": "WoL Waker",
           "description": "Automatically wakes up archival storage servers when media is requested, enabling power-efficient operation.",
           "owner": "Remi Verhoeven",
-          "version": "${{ github.ref_name }}",
+          "version": "${{ steps.version.outputs.version }}",
           "targetAbi": "10.9.0.0",
           "overview": "A Jellyfin plugin that automatically wakes up archival storage servers when media is requested",
           "changelog": "Automated build from ${{ github.sha }}"
@@ -46,16 +58,16 @@ jobs:
         
         # Create ZIP package
         cd plugin-repository/plugin-packages
-        zip -r WoLWaker@v${{ github.ref_name }}.zip WoLWaker/
+        zip -r WoLWaker@${{ steps.version.outputs.version }}.zip WoLWaker/
         
         # Calculate checksum
-        echo "CHECKSUM=$(shasum -a 256 WoLWaker@v${{ github.ref_name }}.zip | cut -d' ' -f1)" >> $GITHUB_ENV
+        echo "CHECKSUM=$(shasum -a 256 WoLWaker@${{ steps.version.outputs.version }}.zip | cut -d' ' -f1)" >> $GITHUB_ENV
     
     - name: Update manifest
       run: |
         # Update version and checksum in manifest
-        sed -i "s/\"version\": \".*\"/\"version\": \"${{ github.ref_name }}\"/" plugin-repository/manifest.json
-        sed -i "s/\"sourceUrl\": \".*\"/\"sourceUrl\": \"https:\/\/remiverhoeven.github.io\/jellyfin_wol_plugin\/WoLWaker@v${{ github.ref_name }}.zip\"/" plugin-repository/manifest.json
+        sed -i "s/\"version\": \".*\"/\"version\": \"${{ steps.version.outputs.version }}\"/" plugin-repository/manifest.json
+        sed -i "s/\"sourceUrl\": \".*\"/\"sourceUrl\": \"https:\/\/remiverhoeven.github.io\/jellyfin_wol_plugin\/WoLWaker@${{ steps.version.outputs.version }}.zip\"/" plugin-repository/manifest.json
         sed -i "s/\"checksum\": \".*\"/\"checksum\": \"${{ env.CHECKSUM }}\"/" plugin-repository/manifest.json
         sed -i "s/\"timestamp\": \".*\"/\"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"/" plugin-repository/manifest.json
     
