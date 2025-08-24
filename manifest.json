@@ -9,8 +9,8 @@
       "version": "main",
       "targetAbi": "10.9.0.0",
       "sourceUrl": "https://remiverhoeven.github.io/jellyfin_wol_plugin/WoLWaker@vmain.zip",
-      "checksum": "1b4633c36a5b97d257b8153e244f7bc30adae110c11ed0a582f139209fa934d8",
-      "timestamp": "2025-08-24T14:39:09Z"
+      "checksum": "eeffd51dd46961ec56f7a35e7201682368c119c376e5caef97802d812352b1fd",
+      "timestamp": "2025-08-24T14:40:51Z"
     }
   ]
 }
