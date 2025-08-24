@@ -1,0 +1,16 @@
+{
+  "guid": "0ee23b2e-9d4d-4b5e-a0b9-7b4e54c5a5f2",
+  "name": "WoL Waker",
+  "description": "Automatically wakes up archival storage servers when media is requested, enabling power-efficient operation.",
+  "owner": "Remi Verhoeven",
+  "category": "General",
+  "versions": [
+    {
+      "version": "main",
+      "targetAbi": "10.9.0.0",
+      "sourceUrl": "https://remiverhoeven.github.io/jellyfin_wol_plugin/WoLWaker@vmain.zip",
+      "checksum": "cda6d085b97d2ab10e4e5cce8e9b7f3de99a9f88de1cbeae9a3674071b8f15e5",
+      "timestamp": "2025-08-24T14:36:55Z"
+    }
+  ]
+}
