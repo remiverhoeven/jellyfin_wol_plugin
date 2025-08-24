@@ -25,33 +25,33 @@
           <label class="inputLabel" for="macAddress">MAC Address *</label>
           <input is="emby-input" type="text" id="macAddress" required />
           <div class="fieldDescription">MAC address of the target server for Wake-on-LAN</div>
-        </div>
-
+                </div>
+                
         <div class="inputContainer">
           <label class="inputLabel" for="serverIp">Server IP Address *</label>
           <input is="emby-input" type="text" id="serverIp" required />
           <div class="fieldDescription">IP address of the target server</div>
-        </div>
-
+                </div>
+                
         <div class="inputContainer">
           <label class="inputLabel" for="broadcastAddress">Broadcast Address</label>
           <input is="emby-input" type="text" id="broadcastAddress" />
           <div class="fieldDescription">Network broadcast address (usually 255.255.255.255)</div>
-        </div>
-
+                </div>
+                
         <div class="inputContainer">
           <label class="inputLabel" for="broadcastPort">Broadcast Port</label>
           <input is="emby-input" type="number" id="broadcastPort" min="1" max="65535" />
           <div class="fieldDescription">UDP port for Wake-on-LAN (usually 9)</div>
-        </div>
-      </div>
-
-      <!-- Wake-up Settings -->
+                </div>
+            </div>
+            
+            <!-- Wake-up Settings -->
       <div class="verticalSection">
         <div class="sectionTitleContainer">
           <h3 class="sectionTitle">Wake-up Settings</h3>
-        </div>
-        
+                </div>
+                
         <label class="checkboxContainer">
           <input is="emby-checkbox" type="checkbox" id="enableAutoWake" />
           <span>Enable automatic wake-up</span>
@@ -66,27 +66,27 @@
           <label class="inputLabel" for="wakeTimeout">Wake Timeout (seconds)</label>
           <input is="emby-input" type="number" id="wakeTimeout" min="60" max="1800" />
           <div class="fieldDescription">Maximum time to wait for server wake-up</div>
-        </div>
-
+                </div>
+                
         <div class="inputContainer">
           <label class="inputLabel" for="checkInterval">Check Interval (seconds)</label>
           <input is="emby-input" type="number" id="checkInterval" min="5" max="60" />
           <div class="fieldDescription">Interval between server status checks</div>
-        </div>
-
+                </div>
+                
         <div class="inputContainer">
           <label class="inputLabel" for="cooldownSeconds">Cooldown Period (seconds)</label>
           <input is="emby-input" type="number" id="cooldownSeconds" min="60" max="3600" />
           <div class="fieldDescription">Minimum time between wake attempts</div>
-        </div>
-      </div>
-
-      <!-- Power Monitoring -->
+                </div>
+            </div>
+            
+            <!-- Power Monitoring -->
       <div class="verticalSection">
         <div class="sectionTitleContainer">
           <h3 class="sectionTitle">Power Monitoring</h3>
-        </div>
-        
+                </div>
+                
         <label class="checkboxContainer">
           <input is="emby-checkbox" type="checkbox" id="powerMonitoringEnabled" />
           <span>Enable power monitoring</span>
@@ -96,33 +96,33 @@
           <label class="inputLabel" for="powerMonitorApiUrl">Power Monitor API URL</label>
           <input is="emby-input" type="text" id="powerMonitorApiUrl" />
           <div class="fieldDescription">URL for the power monitoring API (n8n endpoint)</div>
-        </div>
-
+                </div>
+                
         <div class="inputContainer">
           <label class="inputLabel" for="powerMonitorPollInterval">Polling Interval (seconds)</label>
           <input is="emby-input" type="number" id="powerMonitorPollInterval" min="1" max="30" />
           <div class="fieldDescription">How often to check power status</div>
-        </div>
-      </div>
-
-      <!-- Advanced Settings -->
+                </div>
+            </div>
+            
+            <!-- Advanced Settings -->
       <div class="verticalSection">
         <div class="sectionTitleContainer">
           <h3 class="sectionTitle">Advanced Settings</h3>
-        </div>
-        
+                </div>
+                
         <div class="inputContainer">
           <label class="inputLabel" for="minWakeInterval">Minimum Wake Interval (seconds)</label>
           <input is="emby-input" type="number" id="minWakeInterval" min="10" max="600" />
           <div class="fieldDescription">Minimum time between wake attempts</div>
-        </div>
-
+                </div>
+                
         <div class="inputContainer">
           <label class="inputLabel" for="maxWakeAttempts">Maximum Wake Attempts</label>
           <input is="emby-input" type="number" id="maxWakeAttempts" min="1" max="10" />
           <div class="fieldDescription">Maximum number of wake attempts before giving up</div>
-        </div>
-
+                </div>
+                
         <label class="checkboxContainer">
           <input is="emby-checkbox" type="checkbox" id="showUserMessages" />
           <span>Show user messages</span>
@@ -132,14 +132,19 @@
           <input is="emby-checkbox" type="checkbox" id="enableDetailedLogging" />
           <span>Enable detailed logging</span>
         </label>
-      </div>
-
+            </div>
+            
       <br />
       <button is="emby-button" type="submit" class="raised button-submit block">
         <span>Save</span>
       </button>
-    </form>
-  </div>
+      
+      <br />
+      <button is="emby-button" type="button" id="testWolButton" class="raised block" style="background-color: #00a4dc;">
+        <span>Test Wake-on-LAN</span>
+      </button>
+        </form>
+    </div>
 
   <script type="text/javascript">
     (function () {
@@ -171,7 +176,7 @@
       }
 
       function save(view, e) {
-        e.preventDefault();
+            e.preventDefault();
         Dashboard.showLoadingMsg();
 
         ApiClient.getPluginConfiguration(pluginId).then(function (config) {
@@ -202,12 +207,43 @@
         if (view) load(view);
       });
 
+      function testWol() {
+        Dashboard.showLoadingMsg();
+        
+        fetch('/Wol/test', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+          }
+        })
+        .then(function(response) {
+          Dashboard.hideLoadingMsg();
+          if (response.ok) {
+            Dashboard.alert('Wake-on-LAN packet sent successfully! Check the logs for details.');
+          } else {
+            return response.text().then(function(text) {
+              Dashboard.alert('Failed to send Wake-on-LAN packet: ' + text);
+            });
+          }
+        })
+        .catch(function(error) {
+          Dashboard.hideLoadingMsg();
+          Dashboard.alert('Error: ' + error.message);
+        });
+      }
+
       document.addEventListener('submit', function (e) {
         var view = e.target.closest('#wolWakerConfigurationPage');
         if (view && e.target.matches('.wolWakerConfigForm')) save(view, e);
       });
+
+      document.addEventListener('click', function (e) {
+        if (e.target.id === 'testWolButton' || e.target.closest('#testWolButton')) {
+          testWol();
+        }
+      });
     })();
-  </script>
+    </script>
 </div>
 </body>
 </html>
