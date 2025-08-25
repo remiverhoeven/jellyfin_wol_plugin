@@ -10,9 +10,9 @@
         "version": "1.0.0",
         "targetAbi": "10.9.0.0",
         "sourceUrl": "https://remiverhoeven.github.io/jellyfin_wol_plugin/WoLWaker@1.0.0.zip",
-        "checksum": "f3b7f526f3192af16acd932cc75a5e2b9befa71c23144b295419899501716e14",
-        "changelog": "Initial release with Wake-on-LAN functionality and power monitoring support",
-        "timestamp": "2025-08-24T17:01:10Z"
+        "checksum": "faba74f5e330e0aff6eef8fa7ddb81d1ca9145abc727bd5332e9f5829a50bc74",
+        "changelog": "Added automatic WoL triggers for remote media access, improved event monitoring",
+        "timestamp": "2025-08-25T07:20:12Z"
       }
     ]
   }
