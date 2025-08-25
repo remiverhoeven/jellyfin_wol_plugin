@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Jellyfin.Plugin.WolWaker.Services;
 
 namespace Jellyfin.Plugin.WolWaker.Controllers;
@@ -153,61 +154,96 @@ public class WolController : ControllerBase
     /// Tests the Wake-on-LAN functionality.
     /// </summary>
     /// <returns>Test result.</returns>
-    [HttpPost("test")]
-    [AllowAnonymous]
-    public async Task<ActionResult<object>> Test()
-    {
-        try
+            [HttpPost("test")]
+        [AllowAnonymous]
+        public async Task<ActionResult<object>> Test()
         {
-            _logger.LogInformation("Wake-on-LAN test request received");
-
-            // Validate configuration
-            var config = _plugin.Configuration;
-            var validationErrors = new List<string>();
-
-            if (string.IsNullOrWhiteSpace(config.MacAddress))
-                validationErrors.Add("MAC address not configured");
-
-            if (string.IsNullOrWhiteSpace(config.BroadcastAddress))
-                validationErrors.Add("Broadcast address not configured");
-
-            if (string.IsNullOrWhiteSpace(config.ServerIp))
-                validationErrors.Add("Server IP not configured");
-
-            if (!WolService.IsValidMacAddress(config.MacAddress))
-                validationErrors.Add("Invalid MAC address format");
-
-            if (validationErrors.Any())
+            try
             {
-                return BadRequest(new
+                _logger.LogInformation("Wake-on-LAN test request received");
+
+                // Validate configuration
+                var config = _plugin.Configuration;
+                var validationErrors = new List<string>();
+
+                if (string.IsNullOrWhiteSpace(config.MacAddress))
+                    validationErrors.Add("MAC address not configured");
+
+                if (string.IsNullOrWhiteSpace(config.BroadcastAddress))
+                    validationErrors.Add("Broadcast address not configured");
+
+                if (string.IsNullOrWhiteSpace(config.ServerIp))
+                    validationErrors.Add("Server IP not configured");
+
+                if (!WolService.IsValidMacAddress(config.MacAddress))
+                    validationErrors.Add("Invalid MAC address format");
+
+                if (validationErrors.Any())
                 {
-                    success = false,
-                    errors = validationErrors,
-                    timestamp = DateTime.UtcNow
-                });
+                    return BadRequest(new
+                    {
+                        success = false,
+                        errors = validationErrors,
+                        timestamp = DateTime.UtcNow
+                    });
+                }
+
+                // Test Wake-on-LAN packet
+                var success = await _wolService.TrySendAsync(config);
+
+                var result = new
+                {
+                    success,
+                    mac = config.MacAddress,
+                    broadcastAddress = config.BroadcastAddress,
+                    broadcastPort = config.BroadcastPort,
+                    timestamp = DateTime.UtcNow,
+                    message = success ? "Test packet sent successfully" : "Test packet not sent (cooldown/interval)"
+                };
+
+                return Ok(result);
             }
-
-            // Test Wake-on-LAN packet
-            var success = await _wolService.TrySendAsync(config);
-
-            var result = new
+            catch (Exception ex)
             {
-                success,
-                mac = config.MacAddress,
-                broadcastAddress = config.BroadcastAddress,
-                broadcastPort = config.BroadcastPort,
-                timestamp = DateTime.UtcNow,
-                message = success ? "Test packet sent successfully" : "Test packet not sent (cooldown/interval)"
-            };
+                _logger.LogError(ex, "Error during Wake-on-LAN test");
+                return StatusCode(500, new { error = "Internal server error", message = ex.Message });
+            }
+        }
 
-            return Ok(result);
-        }
-        catch (Exception ex)
+        [HttpPost("test-remote-access")]
+        [AllowAnonymous]
+        public async Task<ActionResult<object>> TestRemoteAccess([FromBody] TestRemoteAccessRequest request)
         {
-            _logger.LogError(ex, "Error during Wake-on-LAN test");
-            return StatusCode(500, new { error = "Internal server error", message = ex.Message });
+            try
+            {
+                _logger.LogInformation("Remote access test request received for path: {Path}", request?.FilePath);
+
+                if (string.IsNullOrWhiteSpace(request?.FilePath))
+                {
+                    return BadRequest(new { error = "File path is required" });
+                }
+
+                // Test the remote media detection and WoL trigger
+                var playbackMonitor = HttpContext.RequestServices.GetRequiredService<PlaybackMonitorService>();
+                await playbackMonitor.CheckAndTriggerWolAsync(request.FilePath);
+
+                var result = new
+                {
+                    success = true,
+                    filePath = request.FilePath,
+                    isRemoteMedia = playbackMonitor.IsRemoteMediaPath(request.FilePath),
+                    timestamp = DateTime.UtcNow,
+                    message = "Remote access test completed"
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during remote access test");
+                return StatusCode(500, new { error = "Internal server error", message = ex.Message });
+            }
         }
-    }
 
     /// <summary>
     /// Resets the Wake-on-LAN attempt counter.
@@ -315,4 +351,15 @@ public class WolController : ControllerBase
             return StatusCode(500, "Error loading configuration page");
         }
     }
+}
+
+/// <summary>
+/// Request model for testing remote access.
+/// </summary>
+public class TestRemoteAccessRequest
+{
+    /// <summary>
+    /// Gets or sets the file path to test.
+    /// </summary>
+    public string FilePath { get; set; } = string.Empty;
 }

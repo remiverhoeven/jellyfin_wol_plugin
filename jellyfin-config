@@ -1,0 +1,16 @@
+# user and group configuration
+user-id=568
+group-id=568
+
+# network configuration
+jellyfin_config_storage_host_path="/mnt/n100pool/apps/jellyfin/config"
+jellyfin_cache_storage_host_path="/mnt/n100pool/apps/jellyfin/cache"
+
+# local storage (local mount on local server)
+additional_storage_1_mount_path="/media/local"
+additional_storage_1_host_path="/mnt/n100pool/media"
+
+# remote storage (nfs mount on local server)
+additional_storage_2_mount_path="/media/remote"
+additional_storage_2_host_path="/mnt/n100pool/remotes/xeon_media"
+

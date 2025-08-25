@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  # Standalone WoL service to wake Xeon before starting TrueNAS apps
+  wol-waker:
+    image: python:3.11-alpine
+    container_name: wol-waker
+    volumes:
+      - ./wol_pre_build.py:/app/wol_pre_build.py
+      - ./wol_config.env:/app/.env
+    working_dir: /app
+    command: >
+      sh -c "
+        pip install python-dotenv &&
+        python wol_pre_build.py &&
+        echo 'Xeon wake-up completed - you can now start your TrueNAS apps'
+      "
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: "no"
+    network_mode: "host"  # Use host network for WoL packets

@@ -1,6 +1,7 @@
 using MediaBrowser.Controller;
 using MediaBrowser.Controller.Plugins;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Jellyfin.Plugin.WolWaker.Services;
 using Jellyfin.Plugin.WolWaker;
 using Jellyfin.Plugin.WolWaker.Controllers;
@@ -29,5 +30,8 @@ public class PluginServiceRegistrator : IPluginServiceRegistrator
         
         // Register configuration
         serviceCollection.AddSingleton<PluginConfiguration>();
+        
+        // Register event subscription service
+        serviceCollection.AddHostedService<EventSubscriptionService>();
     }
 }
